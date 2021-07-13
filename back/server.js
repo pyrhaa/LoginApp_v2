@@ -20,7 +20,7 @@ let authentic = [
   {
     id: 1,
     identity: 'Lucius Afulay',
-    mdp: 'AzulAdrarAman22'
+    password: 'AzulAdrarAman22'
   },
   {
     id: 2,
