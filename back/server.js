@@ -3,18 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const cors = require('cors');
 
-app.use(cors());
-app.use(express.static('build'));
-
-app.use(express.json());
-morgan.token('body', (req, res) => {
-  return JSON.stringify(req.body);
-});
-app.use(
-  morgan(
-    ':method :url :status :res[content-length] - :response-time ms - :body'
-  )
-);
+///////////// My Database /////////////////
 
 let authentic = [
   {
@@ -28,6 +17,51 @@ let authentic = [
     password: 'Cochon0uDesprairi3'
   }
 ];
+
+///////////// Middleware /////////////////
+
+// Middleware for checking if user exists
+const userChecker = (req, res, next) => {
+  const identity = authentic.find(
+    (el) => el.identity.toLowerCase() === req.body.identity.toLowerCase()
+  );
+  if (identity) {
+    next();
+  } else {
+    res.status(401).send('Identity or password invalid.');
+  }
+};
+
+// Middleware for checking if password is correct
+const passwordChecker = (req, res, next) => {
+  const identity = req.body.identity;
+  const password = req.body.password;
+  if (authentic[identity] === password) {
+    next();
+  } else {
+    res.status(401).send('Identity or password invalid.');
+  }
+};
+
+app.use(cors());
+// app.use(express.static('build'));
+
+app.use(express.json());
+morgan.token('body', (req, res) => {
+  return JSON.stringify(req.body);
+});
+app.use(
+  morgan(
+    ':method :url :status :res[content-length] - :response-time ms - :body'
+  )
+);
+
+app.use(express.urlencoded({ extended: false })); // to support URL-encoded bodies
+app.use(express.json()); // to support JSON-encoded bodies
+
+// Configure express to use these 2 middleware for /login route only
+app.use('/login', userChecker);
+app.use('/login', passwordChecker);
 
 app.get('/', (req, res) => {
   res.send('<h1>bonjour monde</h1>');
@@ -97,6 +131,13 @@ app.post('/api/persons', (req, res) => {
 
   authentic = authentic.concat(newPerson);
   res.send(newPerson);
+});
+
+// Create route /login for POST method
+// we are waiting for a POST request with a body containing a json data
+app.post('/login', (req, res) => {
+  const identity = req.body.identity;
+  res.send(`Welcome to your dashboard ${identity}`);
 });
 
 ///////////// invalid url handler /////////////////
