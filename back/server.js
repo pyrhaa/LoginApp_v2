@@ -56,8 +56,8 @@ app.use(
   )
 );
 
-app.use(express.urlencoded({ extended: false })); // to support URL-encoded bodies
-app.use(express.json()); // to support JSON-encoded bodies
+//parses user input and makes it available through the req.body property
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Configure express to use these 2 middleware for /login route only
 app.use('/login', userChecker);
