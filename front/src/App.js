@@ -5,37 +5,24 @@ import Filter from './components/Filter';
 
 const baseUrl = '/api/persons';
 
-let db = [
-  {
-    id: 1,
-    identity: 'Lucius Afulay',
-    password: 'AzulAdrarAman22'
-  },
-  {
-    id: 2,
-    identity: 'Aglellu Boubaburd',
-    password: 'Cochon0uDesprairi3'
-  }
-];
-
 const App = () => {
-  const [persons, setPersons] = useState(db);
+  const [persons, setPersons] = useState([]);
   const [newIdentity, setNewIdentity] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [userIdentity, setUserIdentity] = useState('');
   const [userPassword, setUserPassword] = useState('');
 
   //get retourne promise
-  // useEffect(() => {
-  //   axios
-  //     .get(baseUrl)
-  //     .then((res) => {
-  //       setPersons(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(baseUrl)
+      .then((res) => {
+        setPersons(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   // e.preventDefault() : annuler le refresh de la page au moment du clic
   //addNewPerson test if we have a doublon or else create the new person
@@ -71,7 +58,7 @@ const App = () => {
       };
       const newArray = persons.concat(newPerson);
       setPersons(newArray);
-      // requete POST pour maj backend db.json
+      // requete POST pour maj backend
       axios
         .post(baseUrl, newPerson)
         .then((res) => {
