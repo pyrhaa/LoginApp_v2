@@ -5,27 +5,41 @@ import Filter from './components/Filter';
 
 const baseUrl = '/api/persons';
 
+let db = [
+  {
+    id: 1,
+    identity: 'Lucius Afulay',
+    password: 'AzulAdrarAman22'
+  },
+  {
+    id: 2,
+    identity: 'Aglellu Boubaburd',
+    password: 'Cochon0uDesprairi3'
+  }
+];
+
 const App = () => {
-  const [persons, setPersons] = useState([]);
+  const [persons, setPersons] = useState(db);
   const [newIdentity, setNewIdentity] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [filter, setFilter] = useState('');
+  const [userIdentity, setUserIdentity] = useState('');
+  const [userPassword, setUserPassword] = useState('');
 
   //get retourne promise
-  useEffect(() => {
-    axios
-      .get(baseUrl)
-      .then((res) => {
-        setPersons(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(baseUrl)
+  //     .then((res) => {
+  //       setPersons(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   // e.preventDefault() : annuler le refresh de la page au moment du clic
   //addNewPerson test if we have a doublon or else create the new person
-  const addNewPerson = (e) => {
+  const addNewUser = (e) => {
     e.preventDefault();
     const doublon = persons.filter((person) =>
       person.identity.toLowerCase().includes(newIdentity.toLowerCase())
@@ -70,12 +84,18 @@ const App = () => {
   };
 
   //Verify if the login is valid
-  const successLog =
-    filter.length > 0
-      ? persons.filter((person) =>
-          person.identity.toLowerCase().includes(filter.toLowerCase())
-        )
-      : persons;
+  const successLog = (e) => {
+    e.preventDefault();
+    const user = persons.find(
+      (el) => el.identity === userIdentity && el.password === userPassword
+    );
+    if (user) {
+      console.log('success');
+      window.alert(`Welcome ${user.identity}`);
+    } else {
+      console.log('fail');
+    }
+  };
 
   return (
     <div>
@@ -84,10 +104,14 @@ const App = () => {
       <PersonForm
         setNewIdentity={setNewIdentity}
         setNewPassword={setNewPassword}
-        addNewPerson={addNewPerson}
+        addNewUser={addNewUser}
       />
       <h2>Sign in</h2>
-      <Filter setFilter={setFilter} successLog={successLog} />
+      <Filter
+        setUserIdentity={setUserIdentity}
+        setUserPassword={setUserPassword}
+        successLog={successLog}
+      />
     </div>
   );
 };

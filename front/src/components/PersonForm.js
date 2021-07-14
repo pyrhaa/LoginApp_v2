@@ -1,22 +1,14 @@
-const PersonForm = ({ setNewName, setNewNumber, addNewPerson }) => {
+const PersonForm = ({ setNewIdentity, setNewPassword, addNewUser }) => {
   return (
     <form>
       <div>
-        name:{' '}
-        <input
-          className='nameInput'
-          onChange={(e) => setNewName(e.target.value)}
-        />
+        identity: <input onChange={(e) => setNewIdentity(e.target.value)} />
       </div>
       <div>
-        number:{' '}
-        <input
-          className='numberInput'
-          onChange={(e) => setNewNumber(e.target.value)}
-        />
+        password: <input onChange={(e) => setNewPassword(e.target.value)} />
       </div>
       <div>
-        <button type='submit' onClick={addNewPerson}>
+        <button type='submit' onClick={addNewUser}>
           add
         </button>
       </div>
