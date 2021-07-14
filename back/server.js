@@ -22,10 +22,10 @@ let authentic = [
 
 // Middleware for checking if user exists
 const userChecker = (req, res, next) => {
-  const identity = authentic.find(
+  const user = authentic.find(
     (el) => el.identity.toLowerCase() === req.body.identity.toLowerCase()
   );
-  if (identity) {
+  if (user) {
     next();
   } else {
     res.status(401).send('Identity or password invalid.');
@@ -34,9 +34,11 @@ const userChecker = (req, res, next) => {
 
 // Middleware for checking if password is correct
 const passwordChecker = (req, res, next) => {
-  const identity = req.body.identity;
+  const user = authentic.find(
+    (el) => el.identity.toLowerCase() === req.body.identity.toLowerCase()
+  );
   const password = req.body.password;
-  if (authentic[identity] === password) {
+  if (user.password === password) {
     next();
   } else {
     res.status(401).send('Identity or password invalid.');
@@ -55,9 +57,6 @@ app.use(
     ':method :url :status :res[content-length] - :response-time ms - :body'
   )
 );
-
-//parses user input and makes it available through the req.body property
-app.use(bodyParser.urlencoded({ extended: false }));
 
 // Configure express to use these 2 middleware for /login route only
 app.use('/login', userChecker);
