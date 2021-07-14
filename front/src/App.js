@@ -24,9 +24,9 @@ const App = () => {
   }, []);
 
   // e.preventDefault() : annuler le refresh de la page au moment du clic
+  //addNewPerson test if we have a doublon or else create the new person
   const addNewPerson = (e) => {
     e.preventDefault();
-    //test doublon
     const doublon = persons.filter((person) =>
       person.identity.toLowerCase().includes(newIdentity.toLowerCase())
     );
@@ -69,12 +69,14 @@ const App = () => {
     }
   };
 
+  //Verify if the login is valid
   const successLog =
     filter.length > 0
       ? persons.filter((person) =>
           person.identity.toLowerCase().includes(filter.toLowerCase())
         )
       : persons;
+
   return (
     <div>
       <h2>Authentificator</h2>
