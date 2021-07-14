@@ -46,7 +46,7 @@ const passwordChecker = (req, res, next) => {
 };
 
 app.use(cors());
-// app.use(express.static('build'));
+app.use(express.static('build'));
 
 app.use(express.json());
 morgan.token('body', (req, res) => {
