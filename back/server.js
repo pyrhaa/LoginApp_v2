@@ -62,14 +62,12 @@ app.use(
 app.use('/login', userChecker);
 app.use('/login', passwordChecker);
 
-app.get('/', (req, res) => {
-  res.send('<h1>bonjour monde</h1>');
-});
-
+//list en temps reel de notre database en JSON
 app.get('/api/persons', (req, res) => {
   res.send(authentic);
 });
 
+//recherche d'un utilisateur via ID
 app.get('/api/persons/:id', (req, res) => {
   const personId = req.params.id;
   const person = authentic.find((el) => el.id === Number(personId));
@@ -80,6 +78,7 @@ app.get('/api/persons/:id', (req, res) => {
   }
 });
 
+//resume du nombre d'utilisateurs et heure + date etc.
 app.get('/info', (req, res) => {
   const dateNow = new Date().toString();
 
@@ -93,12 +92,14 @@ app.get('/info', (req, res) => {
   );
 });
 
+//via Postman, delete un utilisateur
 app.delete('/api/persons/:id', (req, res) => {
   const personId = req.params.id;
   authentic = authentic.filter((el) => el.id !== Number(personId));
   res.status(204).end();
 });
 
+//generateur ID unique
 const generateId = () => {
   const maxId =
     authentic.length > 0 ? Math.max(...authentic.map((n) => n.id)) : 0;
