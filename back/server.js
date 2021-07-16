@@ -119,7 +119,7 @@ app.post('/api/persons', (req, res) => {
   );
 
   if (sameName) {
-    return res.status(400).send({ error: 'identity must be unique' });
+    return res.status(400).send({ error: ' This identity is already tooked, it s must be unique' });
   }
 
   const newPerson = {
