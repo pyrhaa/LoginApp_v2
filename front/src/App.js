@@ -25,7 +25,7 @@ const App = () => {
   }, []);
 
   // e.preventDefault() : annuler le refresh de la page au moment du clic
-  //addNewPerson test si on a un doublon, sinon ajoute un nouvel utilisateur
+  //addNewPerson test si on a un doublon(window.confirm actived), sinon ajoute un nouvel utilisateur
   //Quand le window confirm apparait, OK pour changer le mot de passe si different, sinon cancel.
   const addNewUser = (e) => {
     e.preventDefault();
